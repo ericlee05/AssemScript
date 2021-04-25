@@ -11,7 +11,7 @@ MOV -1 // move to first argument
 VAL 0 // set the argument "strFrom" to 0
 
 MOV -2 // move to second argument
-VAL 0 // set the argument "dst" to 0, so getAsset function will copy the asset to 0th
+VAL 1 // set the argument "dst" to 1, so getAsset function will copy the asset to first location
 
 MOV 0 // Set position to Calling Pointer
 VAL 2 // set calling id to 002(getAsset)
@@ -20,7 +20,7 @@ CAL // Copy asset
 
 // execute writeStr()
 MOV -1 // move to first argument
-VAL 0 // set the argument "strFrom" to 0
+VAL 1 // set the argument "strFrom" to 0
 
 MOV 0 // Set position to Calling Pointer
 VAL 101 // set calling id to 101(writeStr)

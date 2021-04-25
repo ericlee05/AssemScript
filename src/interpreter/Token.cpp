@@ -20,7 +20,6 @@ Token nextToken(string srcString){
   string tokenString("");
   
   c = nextChar(srcString);
-  //cout << "\'" << c << "\' at " << pos << endl;
 
   while(c == ' ') c = nextChar(srcString);
 
@@ -31,6 +30,9 @@ Token nextToken(string srcString){
     }else{ // 주석이 아닌 경우, 즉 잘못된 경우
       showException(srcString, pos, "Wrong Token");
     }
+  }else if(c == '#'){ // 전처리문
+    char newC = c;
+    return Token(string{newC}, PREPROCESS_SYMBOL);
   }else if('0' <= c && c <= '9'){ // 숫자
     if(c == '0') return Token("0", INT);
     
@@ -39,14 +41,22 @@ Token nextToken(string srcString){
       char newC = c;
       char tmp[4] = {newC};
       tokenString.append(string(tmp));
-      //cout << "num : " << tokenString << endl;
 
       c = nextChar(srcString);
     }
     return Token(tokenString, INT);
-  }else if(c == '{' || c == '}'){ 
-    char tmp[] = {c};
-    tokenString.append(tmp);
+  }else if(c == '\"'){ // 문자열
+    c = nextChar(srcString);
+    while(c != '\"'){
+      char newC = c;
+      tokenString.append(string({newC}));
+
+      c = nextChar(srcString);
+    }
+    return Token(tokenString, STRING);
+  }else if(c == '{' || c == '}'){ // 반복문
+    char newC = c;
+    tokenString.append(string({newC}));
 
     switch(c){
       case '{' : 
@@ -56,8 +66,8 @@ Token nextToken(string srcString){
         return Token(tokenString, RPT_END);
         break;
     }
-  }else if(('A' <= c && c <= 'Z') || ('a' <= c && c <= 'z')){
-    while(('A' <= c && c <= 'Z') || ('a' <= c && c <= 'z')){ // 식별자 및 명령어
+  }else if(('A' <= c && c <= 'Z') || ('a' <= c && c <= 'z')){ // 식별자 및 명령어
+    while(('A' <= c && c <= 'Z') || ('a' <= c && c <= 'z')){
       char newC = c;
       char tmp[4] = {newC};
       tokenString.append(string(tmp));
@@ -77,31 +87,35 @@ Token nextToken(string srcString){
 
     commandSet.insert(make_pair("VAL", _VAL));
     
-    if(commandSet.find(tokenString) == commandSet.end())
-      return Token(tokenString, NONE);
+    if(commandSet.find(tokenString) == commandSet.end()){
+      map<string, int> preprocessSet;
+      preprocessSet.insert(make_pair("asset", PREPROCESS_CMD));
+
+      if(preprocessSet.find(tokenString) == preprocessSet.end())
+        return Token(tokenString, NONE);
+
+      return Token(tokenString, preprocessSet[tokenString]);
+    }
 
     return Token(tokenString, commandSet[tokenString]);
-  }else if(c == '+' || c == '-'){
+  }else if(c == '+' || c == '-'){ // 값 또는 연산자
     char cFirst = c;
     c = nextChar(srcString);
-    char charSecond = c;
+    char cSecond = c;
 
-    char tmp[] = {cFirst, charSecond};
-    // tokenString.append(string(tmp));
     tokenString.append(string({cFirst}));
-    tokenString.append(string({charSecond}));
+    tokenString.append(string({cSecond}));
 
     if(tokenString == "++"){
       return Token(tokenString, VAL_SUM);
     }else if(tokenString == "--"){
       return Token(tokenString, VAL_SUB);
     }else{
-      if('1' <= charSecond && charSecond <= '9'){ // 숫자
+      if(cFirst == '-' && '1' <= cSecond && cSecond <= '9'){ // 숫자
         c = nextChar(srcString);
         while('0' <= c && c <= '9'){
           char newC = c;
           tokenString.append(string({newC}));
-          //cout << "num : " << tmpForNumber << endl;
 
           c = nextChar(srcString);
         }
@@ -113,10 +127,9 @@ Token nextToken(string srcString){
         showException(srcString, pos, errorString);
       }
     }
-  }else if(c == '\0'){
+  }else if(c == '\0'){ // EOF
     return Token("\0", CEOF);
-  }else{
-    // c = nextChar(srcString);
+  }else{ // Others
     return Token("", NONE);
   }
 }

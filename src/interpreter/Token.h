@@ -25,6 +25,7 @@ enum TokenType {
 
   // 전처리문
   PREPROCESS_SYMBOL, // 전처리 지시문 기호(# 기호)
+  PREPROCESS_CMD,
   STRING, // 전처리문에 사용되는 문자열  
 
   // 명령어 셋

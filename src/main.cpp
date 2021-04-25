@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <fstream>
 #include <string>
+#include <ctime>
 
 #include "./interpreter/Token.h"
 
@@ -27,11 +28,20 @@ int main(){
     exit(0);
   }
 
-  /*char testC = ' ';
-  while(testC != '\0'){
-    testC = nextChar(code);
-    printf("%c", testC);
-  }*/
+  // 소요시간 측정
+  time_t startTimestamp = time(0);
+
+  Token tok = nextToken(code);
+  while(tok.type != CEOF){
+    if(tok.type != 0 && tok.txt != "")
+      cout << "Type : " << tok.type << " / Txt : " << tok.txt << endl;
+    tok = nextToken(code);
+  }
+
+  // 종료시간
+  time_t finishTimestamp = time(0);
+
+  cout << "\n---- AssemScript Finished (" << finishTimestamp - startTimestamp << "ms) ----" << endl;
   
   getchar();
 }

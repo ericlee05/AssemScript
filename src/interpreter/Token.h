@@ -20,6 +20,7 @@ struct Token {
 // Token types
 enum TokenType {
   NONE = 0, // 아무것도 아님
+  CEOF, // EOF
   INT, // 포인터 값 및 포인터가 가리키는 값
 
   // 전처리문

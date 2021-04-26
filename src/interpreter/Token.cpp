@@ -16,7 +16,7 @@ char nextChar(string srcString){
   return c;
 }
 
-Token nextToken(string srcString){
+AssemToken nextToken(string srcString){
   string tokenString("");
   
   c = nextChar(srcString);
@@ -32,9 +32,9 @@ Token nextToken(string srcString){
     }
   }else if(c == '#'){ // 전처리문
     char newC = c;
-    return Token(string{newC}, PREPROCESS_SYMBOL);
+    return AssemToken(string{newC}, PREPROCESS_SYMBOL);
   }else if('0' <= c && c <= '9'){ // 숫자
-    if(c == '0') return Token("0", INT);
+    if(c == '0') return AssemToken("0", INT);
     
 
     while('0' <= c && c <= '9'){
@@ -44,7 +44,7 @@ Token nextToken(string srcString){
 
       c = nextChar(srcString);
     }
-    return Token(tokenString, INT);
+    return AssemToken(tokenString, INT);
   }else if(c == '\"'){ // 문자열
     c = nextChar(srcString);
     while(c != '\"'){
@@ -53,17 +53,17 @@ Token nextToken(string srcString){
 
       c = nextChar(srcString);
     }
-    return Token(tokenString, STRING);
+    return AssemToken(tokenString, STRING);
   }else if(c == '{' || c == '}'){ // 반복문
     char newC = c;
     tokenString.append(string({newC}));
 
     switch(c){
       case '{' : 
-        return Token(tokenString, RPT_START);
+        return AssemToken(tokenString, RPT_START);
         break;
       case '}' : 
-        return Token(tokenString, RPT_END);
+        return AssemToken(tokenString, RPT_END);
         break;
     }
   }else if(('A' <= c && c <= 'Z') || ('a' <= c && c <= 'z')){ // 식별자 및 명령어
@@ -92,12 +92,12 @@ Token nextToken(string srcString){
       preprocessSet.insert(make_pair("asset", PREPROCESS_CMD));
 
       if(preprocessSet.find(tokenString) == preprocessSet.end())
-        return Token(tokenString, NONE);
+        return AssemToken(tokenString, NONE);
 
-      return Token(tokenString, preprocessSet[tokenString]);
+      return AssemToken(tokenString, preprocessSet[tokenString]);
     }
 
-    return Token(tokenString, commandSet[tokenString]);
+    return AssemToken(tokenString, commandSet[tokenString]);
   }else if(c == '+' || c == '-'){ // 값 또는 연산자
     char cFirst = c;
     c = nextChar(srcString);
@@ -107,9 +107,9 @@ Token nextToken(string srcString){
     tokenString.append(string({cSecond}));
 
     if(tokenString == "++"){
-      return Token(tokenString, VAL_SUM);
+      return AssemToken(tokenString, VAL_SUM);
     }else if(tokenString == "--"){
-      return Token(tokenString, VAL_SUB);
+      return AssemToken(tokenString, VAL_SUB);
     }else{
       if(cFirst == '-' && '1' <= cSecond && cSecond <= '9'){ // 숫자
         c = nextChar(srcString);
@@ -119,7 +119,7 @@ Token nextToken(string srcString){
 
           c = nextChar(srcString);
         }
-        return Token(tokenString, INT);
+        return AssemToken(tokenString, INT);
       }else{
         string errorString;
         errorString.append(tokenString);
@@ -128,8 +128,9 @@ Token nextToken(string srcString){
       }
     }
   }else if(c == '\0'){ // EOF
-    return Token("\0", CEOF);
+    return AssemToken("\0", CEOF);
   }else{ // Others
-    return Token("", NONE);
+    return AssemToken("", NONE);
   }
+  return AssemToken("", NONE);
 }

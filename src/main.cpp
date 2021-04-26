@@ -1,9 +1,11 @@
 #include <iostream>
 #include <stdio.h>
+#include <vector>
 #include <fstream>
 #include <string>
 #include <ctime>
 
+#include "./interpreter/SyntaxMatch.h"
 #include "./interpreter/Token.h"
 
 using namespace std;
@@ -31,38 +33,27 @@ int main(){
   // 소요시간 측정
   time_t startTimestamp = time(0);
 
-  int tokenSize = 1;
-  cout << "first malloc" << endl;
-  Token* tokens = (Token*)malloc(sizeof(Token) * tokenSize);
-  Token firstToken = nextToken(code);
-  *tokens = firstToken;
-  cout << "addr : " << &firstToken << endl;
-  cout << "finished assign" << endl;
+  vector<AssemToken> tokens;
+  struct AssemToken tok = nextToken(code);
+  while(tok.type != CEOF){
+    if(tok.type != 0 && tok.txt != ""){
+      tokens.push_back(tok);
+    }
+    tok = nextToken(code);
+  }
 
-  // parse tokens
-  while(1){
-    Token* tok =(Token*) malloc(sizeof(Token));
-    *tok = nextToken(code);
-
-    if((*tok).type == CEOF) break;
-
-    if((*tok).txt != ""){
-      cout << "before realloc" << endl;
-      tokens = (Token*)realloc(tokens, sizeof(Token) * (tokenSize + 1)); // 공간 1개 늘리기
-      cout << "after realloc" << endl;
-      tokens[tokenSize] = *tok;
-      tokenSize++;
+  // 토큰 처리
+  vector<Syntax> processedSyntaxList = matchSyntax(tokens);
+  
+  //토큰 접근 
+  for(int i =0; i < processedSyntaxList.size(); i++){
+    Syntax syntax = processedSyntaxList.at(i);
+    cout << "Type : " << syntax.type << " / Txt : " << endl;
+    for(int i =0; i < syntax.args.size(); i++){
+      AssemToken token = syntax.args.at(i);
+      cout << "Type : " << token.type << " / Txt : " << token.txt << endl;
     }
   }
-
-  // access tokens
-  for(int i = 0; i < tokenSize; i++){
-    cout << "access realloc" << endl;
-    Token token = tokens[i];
-    cout << "Type : " << token.type << " / Txt : " << token.txt << endl;
-    //free(tokens + i);
-  }
-  free(tokens);
 
   // 종료시간
   time_t finishTimestamp = time(0);

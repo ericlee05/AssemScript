@@ -1,3 +1,8 @@
+/*
+  AssemScript 1.0 - SyntaxMatch.cpp
+  인터프리터 문법 매치 구현파일
+*/
+
 #include <iostream>
 #include <vector>
 

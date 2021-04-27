@@ -1,3 +1,8 @@
+/*
+  AssemScript 1.0 - SyntaxMatch.h
+  인터프리터 문법 매치 헤더파일
+*/
+
 #pragma once
 #include <iostream>
 #include "Token.h"

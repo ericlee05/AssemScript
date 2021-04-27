@@ -1,3 +1,8 @@
+/*
+  AssemScript 1.0 - main.cpp
+  인터프리터 메인
+*/
+
 #include <iostream>
 #include <stdio.h>
 #include <vector>

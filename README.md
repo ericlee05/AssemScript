@@ -111,12 +111,17 @@ VAL 값/++/--
 
 ## 라이브러리
 ### 0번대(Basic Functions)
-> 기본적인 런타임 함수
+> 기본적인 연산자/런타임 함수
 
  0. N/A
  1. `copyTo(from, dst)` : from 위치에 있는 값을 dst로 복사합니다.
  2. `getAsset(id, dst)` : `#asset` 문으로 선언한 에셋을 가져옵니다.
  3. `system(cmd)` : 운영체제에서 명령어 실행합니다.
+ 4. `equals(a, b, dst)` : a 위치의 값과 b 위치의 값이 같은지를 확인해 dst 위치에 반환합니다.
+ 5. `and(a, b, dst)` : a 위치의 값과 b의 위치의 값을 and 연산자로 비교해 dst 위치에 반환합니다.
+ 6. `or(a, b, dst)` : a 위치의 값과 b의 위치의 값을 or 연산자로 비교해 dst 위치에 반환합니다.
+ 7. `not(bool, dst)` : bool 위치의 값의 NOT 값을 dst 위치에 반환합니다.
+ 8. `bigger(a, b, dst)` : a 위치의 값이 b 위치의 값보다 큰지 확인하여 dst 위치에 반환합니다.
 
 ### 100번대(Standard I/O)
 > 입/출력
@@ -124,6 +129,8 @@ VAL 값/++/--
  0. `write(ascii)` : 인자값에 해당하는 위치의 값을 UTF-8 형식으로 출력합니다.
  1. `writeStr(strFrom)` : 인자값에 해당하는 위치로부터 `\0` 문자가 나올 때까지 계속 UTF-8 형식으로 출력합니다.
  2. `writeNum(number)` : 인자값에 해당하는 값을 숫자 형태로 출력합니다.
+ 3. `readChar(dst)` : 문자를 입력받아 dst 위치에 저장합니다.
+ 3. `readInt(dst)` : 숫자를 입력받아 dst 위치에 저장합니다.
 
 ### 200번대(하드웨어)
 > Arduino/GPIO 지원 예정

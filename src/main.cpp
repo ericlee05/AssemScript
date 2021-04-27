@@ -51,7 +51,7 @@ int main(){
   // 토큰 처리
   vector<Syntax> processedSyntaxList = matchSyntax(tokens);
   
-  int memSize = 20;
+  int memSize = 30;
   AssemRuntime runtime = AssemRuntime(processedSyntaxList, memSize);
   runtime.execute();
   for(int i = -(memSize / 2); i < (memSize / 2); i++){

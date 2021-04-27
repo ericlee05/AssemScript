@@ -109,6 +109,23 @@ void AssemRuntime::execute(){
         break;
       case CAL :{
         int callNum = getMem(0);
+
+        switch(callNum){
+          case 2: {
+            copyAsset(getMem(-1), getMem(-2));
+          }
+            break;
+          case 101 :{
+            int i = getMem(-1);
+            while((char)getMem(i) != '\0'){
+              cout << (char)getMem(i);
+              i++;
+            }
+            
+          }
+            break;
+        }
+
       }
         break;
       case VAL :{

@@ -12,6 +12,7 @@
 
 #include "./interpreter/SyntaxMatch.h"
 #include "./interpreter/Token.h"
+#include "./interpreter/AssemRuntime.h"
 
 using namespace std;
 
@@ -50,16 +51,13 @@ int main(){
   // 토큰 처리
   vector<Syntax> processedSyntaxList = matchSyntax(tokens);
   
-  //토큰 접근 
-  for(int i =0; i < processedSyntaxList.size(); i++){
-    Syntax syntax = processedSyntaxList.at(i);
-    cout << "Syntax " << syntax.type << " :" << endl;
-    for(int i =0; i < syntax.args.size(); i++){
-      AssemToken token = syntax.args.at(i);
-      cout << "Type : " << token.type << " / Txt : \'" << token.txt << "\'" << endl;
-    }
-    cout << endl;
+  int memSize = 20;
+  AssemRuntime runtime = AssemRuntime(processedSyntaxList, memSize);
+  runtime.execute();
+  for(int i = -(memSize / 2); i < (memSize / 2); i++){
+    cout << runtime.getMem(i) << " ";
   }
+  runtime.destory();
 
   // 종료시간
   time_t finishTimestamp = time(0);

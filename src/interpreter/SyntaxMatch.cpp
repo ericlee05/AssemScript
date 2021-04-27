@@ -47,6 +47,7 @@ vector<Syntax> matchSyntax(vector<AssemToken> tokens){
 
   // rules
   int preAsset1[] =  { PREPROCESS_SYMBOL, PREPROCESS_CMD, INT, STRING };
+  int preAsset2[] =  { PREPROCESS_SYMBOL, PREPROCESS_CMD, INT, INT };
 
   int mov1[] =  { _MOV, INT };
   int mov2[] =  { _MOV, NXT };
@@ -67,6 +68,8 @@ vector<Syntax> matchSyntax(vector<AssemToken> tokens){
 
     // preAsset
     _matcher(&offset, preAsset1, sizeof(preAsset1) / sizeof(int), PRE_ASSET, 
+    &syntaxResult, &tokens);
+    _matcher(&offset, preAsset2, sizeof(preAsset2) / sizeof(int), PRE_ASSET, 
     &syntaxResult, &tokens);
 
     // mov

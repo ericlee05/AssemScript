@@ -48,11 +48,12 @@ int main(){
   //토큰 접근 
   for(int i =0; i < processedSyntaxList.size(); i++){
     Syntax syntax = processedSyntaxList.at(i);
-    cout << "Type : " << syntax.type << " / Txt : " << endl;
+    cout << "Syntax " << syntax.type << " :" << endl;
     for(int i =0; i < syntax.args.size(); i++){
       AssemToken token = syntax.args.at(i);
-      cout << "Type : " << token.type << " / Txt : " << token.txt << endl;
+      cout << "Type : " << token.type << " / Txt : \'" << token.txt << "\'" << endl;
     }
+    cout << endl;
   }
 
   // 종료시간

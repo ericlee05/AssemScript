@@ -10,28 +10,30 @@ void _matcher(int* offsetP, int* rulesArr, int rulelen, int type, vector<Syntax>
   if((*offsetP) + (rulelen) <= (*tokens).size()){
       int vaild = 1;
 
-      cout << (*offsetP) << " to " << (*offsetP) + rulelen << endl;
+      //cout << (*offsetP) << " to " << (*offsetP) + rulelen << endl;
 
       for(int i = (*offsetP); i < (*offsetP) + rulelen; i++){
-        cout << (*tokens).at(i).txt << " ";
-
-        if((*tokens).at(i).type != ANY && (*tokens).at(i).type != rulesArr[i]) vaild = 0;
+        if((*tokens).at(i).type != ANY && (*tokens).at(i).type != rulesArr[i - (*offsetP)]){
+          vaild = 0;
+        }
       }
-      cout << endl << endl;
 
       if(vaild){
         vector<AssemToken> tokenArgs;
-        for(int i = 0; i < rulelen; i++){
+        for(int i = (*offsetP); i < (*offsetP) + rulelen; i++){
+          //cout << (*tokens).at(i).txt << " ";
+
           tokenArgs.push_back((*tokens).at(i));
-      }
+        }
       Syntax syntaxItem = {
         type, tokenArgs
       };
 
       (*syntaxResult).push_back(syntaxItem);
-      cout << "Push item!" << endl;
+      //cout << " / Push item!" << endl;
       (*offsetP) += rulelen;
     }
+
   }
 }
 
@@ -77,7 +79,7 @@ vector<Syntax> matchSyntax(vector<AssemToken> tokens){
      &syntaxResult, &tokens);
     
     // cal
-    _matcher(&offset, rpt1, sizeof(rpt1) / sizeof(int), CAL, 
+    _matcher(&offset, cal1, sizeof(cal1) / sizeof(int), CAL, 
     &syntaxResult, &tokens);
 
     // val
@@ -87,6 +89,8 @@ vector<Syntax> matchSyntax(vector<AssemToken> tokens){
      &syntaxResult, &tokens);
     _matcher(&offset, val3, sizeof(val3) / sizeof(int), VAL,
      &syntaxResult, &tokens);
+    
+    //cout << "================================" << endl; //<< "next token : " << tokens.at(offset).txt << "(" << tokens.at(offset).type << ")" << endl;
   }
 
   return syntaxResult;

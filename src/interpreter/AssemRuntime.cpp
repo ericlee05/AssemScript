@@ -63,6 +63,7 @@ void AssemRuntime::copyAsset(int id, int copyTo){
       for(int j = 0; j < assetStore.at(i).assetValues.size(); j++){
         setMem(copyTo + j, assetStore.at(i).assetValues.at(j));
       }
+      setMem(copyTo + assetStore.at(i).assetValues.size(), '\0');
 
     }
   }
